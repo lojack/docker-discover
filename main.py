@@ -11,22 +11,25 @@ env = Environment(loader=PackageLoader('haproxy', 'templates'))
 POLL_TIMEOUT=5
 
 def get_etcd_addr():
-    if "ETCD_HOST" not in os.environ:
-        print "ETCD_HOST not set"
+    if "ETCD_1_PORT_4001_TCP_ADDR" not in os.environ:
+        print "ETCD_1_PORT_4001_TCP_ADDR not set"
         sys.exit(1)
 
-    etcd_host = os.environ["ETCD_HOST"]
+    etcd_host = os.environ["ETCD_1_PORT_4001_TCP_ADDR"]
     if not etcd_host:
-        print "ETCD_HOST not set"
+        print "ETCD_1_PORT_4001_TCP_ADDR not set"
+        sys.exit(1)
+        
+    if "ETCD_1_PORT_4001_TCP_PORT" not in os.environ:
+        print "ETCD_1_PORT_4001_TCP_PORT not set"
         sys.exit(1)
 
-    port = 4001
-    host = etcd_host
+    etcd_port = os.environ["ETCD_1_PORT_4001_TCP_PORT"]
+    if not etcd_host:
+        print "ETCD_1_PORT_4001_TCP_PORT not set"
+        sys.exit(1)
 
-    if ":" in etcd_host:
-        host, port = etcd_host.split(":")
-
-    return host, port
+    return etcd_host, etcd_port
 
 def get_services():
 
